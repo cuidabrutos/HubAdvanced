@@ -1,0 +1,671 @@
+# #!          ██       ██  ██        ██  ████████      ████████████                                                                                        
+# #!          ██       ██  ██        ██  ██      ██    ██        ██                                                         
+# #!          ██       ██  ██        ██  ██        █   ██        ██                                                   
+# #!          ███████████  ██        ██  ██         █  ██        ██                                                           
+# #!          ██       ██  ██        ██  ████████████  ████████████                                                     
+# #!          ██       ██  ██        ██  ██         █  ██        ██  █████     █████     █████                                                                
+# #!          ██       ██  ██        ██  ██       ██   ██        ██  █████     █████     █████                                           
+# #!          ██       ██  ████████████  █████████     ██        ██  █████     █████     █████                                                           
+
+
+
+  
+#		                             © Made by Cuidabrutos | HubAdvanced™
+# #!						      ___________________________________
+# #!							       ________________________
+
+
+# License information:
+# ✲ You're allowed to change this file for yourself
+# ✲ You aren't allowed to re-publish this file
+# ✲ You aren't allowed to sell this file
+# ✲ You aren't allowed to remove the copyright text
+# ✲ You aren't allowed to copy this license information-text
+
+
+             options:
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------PERMISSIONS-------------------------------------------------|#
+#|---------------------------------------------------By-Cuidabrutos----------------------------------------------|#
+#|---------------------------------------------------Version 1.0-------------------------------------------------|#
+#|---------------------------------------------------Hub Advanced------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#     
+    P: &6HubAdvanced &c>> &f                  
+                       #Permissions: EDITABLE
+	VIP: hubadvanced.vip  # VIP PLAYERS!
+	PLAYERPer: hubadvanced.player #Permission for players
+	ADMINPer: hubadvanced.admin #Permission for admins
+	                   # NO EDIT VERSION
+	version: 1.8
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------COMMANDS----------------------------------------------------|#
+#|---------------------------------------------------By-Cuidabrutos----------------------------------------------|#
+#|---------------------------------------------------Version 1.0-------------------------------------------------|#
+#|---------------------------------------------------Hub Advanced------------------------------------------------|#
+# /sethub - SetHub-SpawnJoin To Location Of Player!
+# /hub - Teleport To Hub!
+# /ha - List Of All Commands!
+#
+#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------NO EDIT-----------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|------------------------------------------------COMMANDS-------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|-------------------------------------------NO EDIT-------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+#|---------------------------------------------------------------------------------------------------------------|#
+command /addpermission [<offline player>]:
+	permission: hubadvanced.admin
+	trigger:
+		if arg 1 is set:
+			if {uuid.%arg 1%} is set:
+				open chest with 3 rows named "&cADDPERMSSIONS &4%arg 1%" to player 
+				wait 4 tick
+				format slot 0 of player with diamond named "Add Permission Admin To %arg 1%" with lore "Give Permssion Admin To Player" to run [make player execute command "/pex user %arg 1% add hubadvanced.admin"]
+				format slot 1 of player with 266 named "Add Permission VIP To %arg 1%" with lore "Give Permssion VIP To Player" to run [make player execute command "/pex user %arg 1% add hubadvanced.vip"]
+				set {Select.%player%} to arg 1 
+			else:
+				send "&6HUB ADVANCED &7» &rNeed Join The Player First!"
+		else:
+			send "&6HUB ADVANCED &7» &r/addpermission <player>"
+command /block <text>:
+	permission: hubadvanced.admin
+	permission message: Need Permission!
+	trigger:
+		if arg-1 is set:
+			if {blockedcommands::*} contains "%arg-1%":
+				send "&4Alredy Blocked!"
+			else:
+				add argument-1 to {blockedcommands::*}
+				send "&2Command Blocked!"
+		else:
+			send "&4Specify Command!"
+command /invsee [<player>]:
+	permission: hubadvanced.admin
+	permission message: &4Need Permission!
+	trigger:
+		if arg 1 is not set:
+			send "&4Select One Player!"
+		else:
+			open the arg-1's inventory for the player
+command /unblock <text>:
+	permission: hubadvanced.admin
+	permission message: &4Need Permission!
+	trigger:
+		if arg-1 is set:
+			remove "%arg-1%" from {blockedcommands::*}
+			send "&2Unblocked Sussesful!"
+		else:
+			send "Specify Command!"
+command /sethub:
+	permission: hubadvanced.admin
+	trigger:
+		set {hub} to location of player
+		message "&6HUB ADVANCED &7» &cHub Set!"
+command /hathub [<item>]:
+	permission: hubadvanced.VIP
+	trigger:
+		set helmet slot of player to arg 1
+		set {_hat} to arg 1
+		send "&f%{HubAdvanced.config::successful-msg}%"
+		play raw sound "random.pop" at player with pitch 1 volume 10
+command /setmotd <text>:
+	description: set your Server MOTD
+	permission: hubadvanced.admin
+	trigger:
+		set {motd} to arg 1
+command /invseeoffline [<offlineplayer>]:
+	permission: hubadvanced.admin
+	trigger:
+		set {EditingInventory::%player%} to arg-1
+		open chest with 4 rows named "Inventory Of - %arg-1%" to player
+		set serialized contents of player's current inventory to {Inventory::%arg-1%}
+command /signs [<text>] [<text>]:
+	permission: hubadvanced.admin
+	trigger:
+		if arg 1 isn't set:
+			message ""
+			message " &6HUB ADVANCED &7» &bv.{@version}"
+			message " &a/signs setname1 <text> - &bSetname To Command Line 1"
+			message " &a/signs setcommand1 </command> &7» &bSet To Command"
+			message " &a/signs view1 &7» &bView Name and Command To Sign 1!"
+		else if arg 1 is "setname1":
+			if arg 2 is "%arg 2%":
+				set {SignName1} to arg 2
+				send " &6HUB ADVANCED &7» &aName Of Sign Set! To: %{SignName1}% "
+			else:
+			    send "{@P} Set Name!"
+		else if arg 1 is "setcommand1":
+			if arg 2 is "%arg 2%":
+				set {SignCommand1} to arg 2
+				send " &6HUB ADVANCED &7» &aCommand Of Sign Set To: &4&l%arg 2% "      
+            else:
+                send "{@P} Select Command First!"
+command /view1:
+   permission: hubadvanced.admin
+   trigger:
+       send "{@P} Name: {SignName1}"
+       send "{@P} Command: {SignCommand1}"
+command /hub:
+	permission: hubadvanced.player
+	trigger:
+		teleport player to {hub}
+		send "&6HUB ADVANCED &7» &cTeleported to Hub!"
+command /hakick:
+	trigger:
+		execute console command "/kick %Player% &5&l⇒You have been Kicked for &6&lSwearing/Advertising⇐"
+command /autoupdater [<text>]:
+   permission: hubadvanced.admin
+   trigger:
+	   if arg 2 is "on":
+			broadcast " &6HUB ADVANCED &7» &aAuto Updater Set To True!. "
+			set {autoupdater} to true
+	   if arg 2 is "off":
+			broadcast " &6HUB ADVANCED &7» &cAuto Updater Set To False!. "
+			set {autoupdater} to false
+	   else:
+			message " &6HUB ADVANCED &7» &cYou dont have permission for this command!"
+command /hubadvanced [<text>] [<text>]:
+	aliases: /ha
+	permission: hubadvanced.admin
+	trigger:
+		if player has permission "{@ADMINper}":
+			if arg 1 is "update":
+				if {@updater} is true:	
+					wait 1 second
+					if text from "" is not "{@version}":
+						message "{@P} Nueva version disponible! &6Descarga de: &bhttps://www.spigotmc.org/resources/%E2%98%85-hub-advanced-professional-hub-%E2%98%85.28280/"
+					if text from "" is "{@version}":
+						message "{@P} No hay actualizacion disponible."
+						stop		
+		if arg 1 isn't set:
+			message ""
+			message " &6HUB ADVANCED &7» &bv.1.8"
+			message " &a/ha chat <on/off> &7» &bDisable/Enable chat"
+			message " &a/ha setlobby &7» &bSet server lobby/spawn"
+			message " &a/ha reload &7» &bReload HubAdvanced"
+			message " &a/ha cc &7» &bRemoved chat."
+			message " &a/hub &7» &bTp To Hub!"
+			message " &a/sethub &7»  &bSet Hub!"
+			message " &a/hathub <item> &7» &bSet Slot Helmet On Block!"
+			message " &a/invsee <player> &7» &bView inventory Of PLayer!"
+			message " &a/invseeoffline <player> &7» &bView Inventory Of Player Offline!"
+			message " &a/setmotd &7»  &bSet MOTS SIGNS!"
+			message " &a/block <command> &7»  &bBlock CMDS!"
+			message " &a/unblock <command> &7»  &bUnblock CMDS!"
+			message " &a/addpermission <player> &7»  &bGive Permssions Of Plugin&4 Need PEX!"
+			message " &6CHANGE CONFIGS IN config.yml "
+		else if arg 1 is "chat":
+			if player has permission "{@ADMINPer}":
+				if arg 2 is "on":
+					broadcast " &6HUB ADVANCED &7» &aChat enabled. "
+					set {chat} to true
+				if arg 2 is "off":
+					broadcast " &6HUB ADVANCED &7» &cChat disabled. "
+					set {chat} to false
+			else:
+				message " &6HUB ADVANCED &7» &cYou dont have permission for this command!"
+		else if arg 1 is "Reload":
+			if player has permission "{@ADMINPer}":
+				execute console command "/sk reload HubAdvanced"
+				execute console command "/sk reload HubAdvancedADDONLOGIN"
+				message " &6HUB ADVANCED &7» &aHubAdvanced reloaded!"
+			else:
+				message " &6HUB ADVANCED &7» &cYou dont have permission for this command!"
+		else if arg 1 is "cc":
+			if player has permission "{@ADMINPer}":
+				loop 100 times:
+					message " "
+				message " &6HUB ADVANCED &7» &a&aChat removed!"
+			else:
+				message " &6HUB ADVANCED &7» &cYou dont have permission for this command!"
+		else if arg 1 is "clearchat":
+			if player has permission "{@ADMINPer}":
+				loop 100 times:
+					message " "
+				message " &6HUB ADVANCED &7» &aChat removed!"
+			else:
+				message " &6HUB ADVANCED &7» &cYou dont have permission for this command!"
+		else:
+			message " &6HUB ADVANCED &7» &cCommand not found!"
+
+#EVENTOS NO CAMBIAR!!
+on load:
+    if folder "plugins/HubAdvanced" doesn't exists:
+        create folder "plugins/HubAdvanced"
+
+
+
+# CONFIG,YML NO TOCAR
+on load:
+	if file "plugins/HubAdvanced/config.yml" doesn't exists:
+		create file "plugins/HubAdvanced/config.yml"
+		wf "## Hub Advanced By Cuidabrutos ##" to "plugins/HubAdvanced/config.yml"
+		wf "## PERMISSIONS: ##" to "plugins/HubAdvanced/config.yml"
+		wf "## HubAdvanced.player - Permission To Players No OP No Vip ##" to "plugins/HubAdvanced/config.yml"
+		wf "## HubAdvanced.admin - Permission Total!##" to "plugins/HubAdvanced/config.yml"
+		wf "## HubAdvanced.VIP - Permission For Vip Players!##" to "plugins/HubAdvanced/config.yml"
+		wf "## Hub Advanced By Cuidabrutos ##" to "plugins/HubAdvanced/config.yml"
+		wf "## JOIN ON HUB ##" to "plugins/HubAdvanced/config.yml"
+		wf "teleport-to-lobby-on-join: true" to "plugins/HubAdvanced/config.yml"
+        wf "## WELCOME MESSAGE TRUE/FALSE ##" to "plugins/HubAdvanced/config.yml"
+		wf "welcome-msg: true" to "plugins/HubAdvanced/config.yml"
+		wf "borderline1: '&7&l&m=============================='" to "plugins/HubAdvanced/config.yml"
+		wf "line1: '&f&lWelcome to server! HubAdvanced!'" to "plugins/HubAdvanced/config.yml"
+		wf "borderline2: '&7&l&m=============================='" to "plugins/HubAdvanced/config.yml"
+		wf "## GRIFING TRUE/FALSE ##" to "plugins/HubAdvanced/config.yml"
+		wf "cancel-place: true" to "plugins/HubAdvanced/config.yml"
+		wf "cancel-break: true" to "plugins/HubAdvanced/config.yml"
+		wf "cancel-drop: true" to "plugins/HubAdvanced/config.yml"
+		wf "cancel-damage: true" to "plugins/HubAdvanced/config.yml"
+		wf "## Motd ##" to "plugins/HubAdvanced/config.yml"
+		wf "motdenable: true" to "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::bline1} to coloured value "borderline1" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::bline2} to coloured value "borderline2" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::tp-onjoin} to value "teleport-to-lobby-on-join" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::welcome-msg} to value "welcome-msg" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::cancel-place} to value "cancel-place" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::cancel-break} to value "cancel-break" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::cancel-drop} to value "cancel-drop" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::cancel-damage} to value "cancel-damage" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::particle} to value "particle" get of "plugins/HubAdvanced/config.yml"
+	set {HubAdvanced.config::motd.enable} to value "motdenable" get of "plugins/HubAdvanced/config.yml"
+	loop 9 times:
+		set {HubAdvanced.config::line%loop-number%} to coloured value "line%loop-number%" get of "plugins/HubAdvanced/config.yml"		
+on load:
+	if file "plugins/HubAdvanced/hats.yml" doesn't exists:
+		create file "plugins/HubAdvanced/hats.yml"
+		wf "## HUB ADVANCED!!! HATS ##" to "plugins/HubAdvanced/hats.yml"
+		wf " " to "plugins/HubAdvanced/hats.yml"
+		wf " " to "plugins/HubAdvanced/hats.yml"
+		wf "## ITEM LIST ## - NO USE CODING COLOR!" to "plugins/HubAdvanced/hats.yml"
+		wf "oak-wood: Oak Wood" to "plugins/HubAdvanced/hats.yml"
+		wf "chest: Chest" to "plugins/HubAdvanced/hats.yml"
+		wf "sponge: Sponge" to "plugins/HubAdvanced/hats.yml"
+		wf "noteblock: Note Block" to "plugins/HubAdvanced/hats.yml"
+		wf "piston: Piston" to "plugins/HubAdvanced/hats.yml"
+		wf "tnt: TNT" to "plugins/HubAdvanced/hats.yml"
+		wf "obsidian: Obsidian" to "plugins/HubAdvanced/hats.yml"
+		wf "mob-spawner: Monster Spawner" to "plugins/HubAdvanced/hats.yml"
+		wf "oak-leaves: Oak Leaves" to "plugins/HubAdvanced/hats.yml"
+		wf "jack-o-lantern: Jack" to "plugins/HubAdvanced/hats.yml"
+		wf "soul-sand: Soul Sand" to "plugins/HubAdvanced/hats.yml"
+		wf "cactus: Cactus" to "plugins/HubAdvanced/hats.yml"
+		wf "snow: Snow" to "plugins/HubAdvanced/hats.yml"
+		wf "bookshelf: Bookshelf" to "plugins/HubAdvanced/hats.yml"
+		wf "glowstone: Glowstone" to "plugins/HubAdvanced/hats.yml"
+		wf "bedrock: Bedrock" to "plugins/HubAdvanced/hats.yml"
+		wf "glass: Glass" to "plugins/HubAdvanced/hats.yml"
+		wf "jukebox: Jukebox" to "plugins/HubAdvanced/hats.yml"
+		wf "clay-bricks-block: Bricks" to "plugins/HubAdvanced/hats.yml"
+		wf "ice: Ice" to "plugins/HubAdvanced/hats.yml"
+		wf "mossy-cobblestone: Moss Stone" to "plugins/HubAdvanced/hats.yml"
+		wf "nether-brick-stairs: Nether Brick Stairs" to "plugins/HubAdvanced/hats.yml"
+		wf "fence-gate: Oak Fence Gate" to "plugins/HubAdvanced/hats.yml"
+		wf "end-portal: End Portal" to "plugins/HubAdvanced/hats.yml"
+		wf "mycelium: Mycelium" to "plugins/HubAdvanced/hats.yml"
+		wf "green-wool: Lime Wool" to "plugins/HubAdvanced/hats.yml"
+		wf "crafting-table: Crafting Table" to "plugins/HubAdvanced/hats.yml"
+		wf "melon-block: Melon" to "plugins/HubAdvanced/hats.yml"
+		wf "emerald-block: Block of Emerald" to "plugins/HubAdvanced/hats.yml"
+		wf "lamp: Redstone Lamp" to "plugins/HubAdvanced/hats.yml"
+		wf "beacon: Beacon" to "plugins/HubAdvanced/hats.yml"
+		wf "anvil: Anvil" to "plugins/HubAdvanced/hats.yml"
+		wf "quartz-ore: Nether Quartz Ore" to "plugins/HubAdvanced/hats.yml"
+		wf "hay-block: Hay Bale" to "plugins/HubAdvanced/hats.yml"
+		wf "enchantmenttable: Encantment Table" to "plugins/HubAdvanced/hats.yml"
+		wf "gold-block: Block of Gold" to "plugins/HubAdvanced/hats.yml"
+		wf "redstone-ore: Redstone Ore" to "plugins/HubAdvanced/hats.yml"
+		wf "end-stone: End Stone" to "plugins/HubAdvanced/hats.yml"
+		wf "ender-chest: Ender Chest" to "plugins/HubAdvanced/hats.yml"
+		wf "dispenser: Dispenser" to "plugins/HubAdvanced/hats.yml"
+		wf "diamond-block: Block of Diamond" to "plugins/HubAdvanced/hats.yml"
+		wf "oak-wood-stairs: Oak Wood Stairs" to "plugins/HubAdvanced/hats.yml"
+		wf "close: '&4Close Menu'" to "plugins/HubAdvanced/hats.yml"
+		wf "next-pag: '&fPag. 2'" to "plugins/HubAdvanced/hats.yml"
+		wf "past-pag: '&fPag. 1'" to "plugins/HubAdvanced/hats.yml"
+		wf " " to "plugins/HubAdvanced/hats.yml"
+		wf "## Hats Messages ##" to "plugins/HubAdvanced/hats.yml"
+		wf "successful-msg: '&aYou have placed a hat!'" to "plugins/HubAdvanced/hats.yml"
+		wf "nopermission-msg: '&cNo permission!'" to "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::oak-wood} to value "oak-wood" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::chest} to value "chest" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::sponge} to value "sponge" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::noteblock} to value "noteblock" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::piston} to value "piston" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::tnt} to value "tnt" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::obsidian} to value "obsidian" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::mob-spawner} to value "mob-spawner" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::oak-leaves} to value "oak-leaves" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::jack-o-lantern} to value "jack-o-lantern" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::soul-sand} to value "soul-sand" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::cactus} to value "cactus" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::snow} to value "snow" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::bookshelf} to value "bookshelf" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::glowstone} to value "glowstone" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::bedrock} to value "bedrock" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::glass} to value "glass" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::jukebox} to value "jukebox" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::clay-bricks-block} to value "clay-bricks-block" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::ice} to value "ice" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::mossy-cobblestone} to value "mossy-cobblestone" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::nether-brick-stairs} to value "nether-brick-stairs" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::fence} to value "fence-gate" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::end-portal} to value "end-portal" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::mycelium} to value "mycelium" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::green-wool} to value "green-wool" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::crafting-table} to value "crafting-table" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::melon-block} to value "melon-block" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::emerald-block} to value "emerald-block" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::lamp} to value "lamp" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::beacon} to value "beacon" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::anvil} to value "anvil" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::quartz-ore} to value "quartz-ore" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::hay-block} to value "hay-block" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::enchantmenttable} to value "enchantmenttable" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::gold-block} to value "gold-block" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::redstone-ore} to value "redstone-ore" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::end-stone} to value "end-stone" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::ender-chest} to value "ender-chest" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::dispenser} to value "dispenser" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::diamond-block} to value "diamond-block" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::itemname::oak-wood-stairs} to value "oak-wood-stairs" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::closegui} to colored value "close" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::nextpag-gui} to colored value "next-pag" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::pastpag-gui} to colored value "past-pag" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::name-gui1} to colored value "gui1" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::name-gui2} to colored value "gui2" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::successful-msg} to colored value "successful-msg" get of "plugins/HubAdvanced/hats.yml"
+	set {HubAdvanced.config::nopermission-msg} to colored value "nopermission-msg" get of "plugins/HubAdvanced/hats.yml"
+
+
+    
+    
+on load:
+	set {chat} to true
+	broadcast " &6HUB ADVANCED &7» &aHub Advanced enabled!"
+
+on drop:
+	if player has permission "{@ADMINPer}":
+		stop
+	else:
+		cancel event
+		message " &6HUB ADVANCED &7» &cYou dont have permission for drop items!" to player
+on load:
+    if "%World of player%" is not "{worldhub}":
+        set {worldhub} to false in world 
+on damage of player:
+	if {HubAdvanced.config::cancel-damage} is "true":
+		victim is in world {HubAdvanced.world}:
+			cancel event
+		if damage was caused by void:
+			make victim execute command "/hub"	
+on drop:
+	if {HubAdvanced.config::cancel-drop} is "true":
+		player is in world {HubAdvanced.world}:
+			if player does not have permission "HubAdvanced.admin":
+				cancel event
+on break:
+	if {HubAdvanced.config::cancel-break} is "true":
+		player is in world {HubAdvanced.world}:
+			if player does not have permission "HubAdvanced.admin":
+				cancel event
+on place:
+	if {HubAdvanced.config::cancel-place} is "true":
+		player is in world {HubAdvanced.world}:
+			if player does not have permission "HubAdvanced.admin":
+				cancel event
+on respawn:
+	make player execute command "/hub"
+on quit:
+	set {Inventory::%player%} to serialized contents of player's inventory
+
+on join:
+	set serialized contents of player's inventory to {Inventory::%player%}
+
+on inventory close:
+	{EditingInventory::%player%} is set
+	set {Inventory::%{EditingInventory::%player%}%} to serialized contents of player's current inventory
+	delete {EditingInventory::%player%}
+
+on join:
+	if {HubAdvanced.config::tp-onjoin} is "true":
+		make player execute command "/hub"
+		heal the player
+		add 10 to hunger level
+on sign change:
+    line 1 is "hubadvanced" or "ha":
+        if line 2 is "hub":
+            set line 1 to "&f&lHubAdvanced"
+            set line 2 to "&4&lGo To Hub!"
+on rightclick on sign:
+	if line 1 of clicked block is "&f&lHubAdvanced":
+		if line 2 of clicked block is "&4&lGo To Hub!":
+			make player execute command "/hub"		
+on sign change:
+    line 1 is "hubadvanced" or "ha":
+        if line 2 is "reload":
+            set line 1 to "&f&lHubAdvanced"
+            set line 2 to "&4&lReload!"
+on rightclick on sign:
+	if line 1 of clicked block is "&f&lHubAdvanced":
+		if line 2 of clicked block is "&4&lReload!":
+			make player execute command "/ha reload"	            
+on join:
+	if {HubAdvanced.config::welcome-msg} is "true":
+		wait 1 seconds
+		loop 200 times:
+			send " "
+		send "&f%{HubAdvanced.config::bline1}%"
+		loop 9 times:
+			if {HubAdvanced.config::line%loop-number%} is set:
+				send "&f%{HubAdvanced.config::line%loop-number%}%"
+		send "&f%{HubAdvanced.config::bline2}%"
+		
+on load:
+	loop 9 times:
+		if {HubAdvanced.config::line%loop-number%} is "":
+			delete {HubAdvanced.config::line%loop-number%}
+
+on server ping:
+	if {HubAdvanced.config::motd.enable} is "true":
+		set motd to "%{motd}%"
+    if {HubAdvanced.config::motd.enable} is "true":
+        if {motd} is not set:
+            set motd to "&6&lChange With /setmotd <motd>"
+on break:
+	if player has permission "{@ADMINPer}":
+		stop		
+	else:
+		cancel event
+		message " &6HUB ADVANCED &7» &cYou dont have permission for break!" to player
+on sign change:
+	if line 1 is "%{1.SignName}%":
+	    send "{@Prefix} &aCreated Sign %{1.SignName}% %{1.SignCommand}%"
+		set line 1 of block to "%{1.SignLine1}%"
+		set line 2 of block to "%{1.SignLine2}%"
+		set line 3 of block to "%{1.SignLine3}%"
+		set line 4 of block to "%{1.SignLine4}%"
+every 300 seconds:
+	if {autoupdater} is true:
+		if text from "https://raw.githubusercontent.com/cuidabrutos/HubAdvanced/master/version.txt" is not "{@version}":
+			download from "" to "plugins/Skript/scripts/Emotich.sk"
+			wait 5 ticks
+			execute console command "skript reload Emotich"
+			wait 5 ticks
+			loop all players:
+				if loop-player is op:
+					send "&e&lActualización Emotich a la versión 4.1" to loop-player
+					send "&bActualización de la sección de opciones si es necesario!" to loop-player
+					send "&aPor favor reporta cualquier bug!" to loop-player
+on join:
+	if {@updater} is true:	
+		player has permission "{@ADMINPer}":
+			wait 1 second
+			if text from "https://raw.githubusercontent.com/cuidabrutos/HubAdvanced/master/version.txt" is not "{@version}":
+				message "{@Emot} Nueva version disponible! &6Descarga de: &bhttps://www.spigotmc.org/resources/emotich.22174/"
+on right click on sign:
+	if line 1 is "%{1.SignName}%":
+		make player execute command "%{1.SignCommand}%"
+
+on place:
+	if player has permission "{@ADMINPer}":
+		stop		
+	else:
+		cancel event
+		message " &6HUB ADVANCED &7» &cYou dont have permission for break!" to player
+
+on weather change to rain or thunder:
+	set weather to sunny
+	set time to 12:00
+	execute console command "/gamerule doDaylightCycle true"
+	execute console command "/gamerule commandBlockOutput false"
+on chat:
+	replace all "<3" in the message with "&c&l❤&f"
+	replace all "{music}" in the message with "&a&l♫&f"
+	replace all "{nuclear}" in the message with "&6☢&f"
+	replace all ":D" in the message with "&aツ&f"
+	replace all "{x}" in the message with "&r✘&f"
+	replace all "{tm}" in the message with "&f™&f"
+	replace all "{sol}" in the message with "&e☀&f"
+	replace all "{human}" in the message with "&r웃&f"
+	replace all "{nazi}" in the message with "&c&l卐&f"
+
+
+
+
+on join:
+	set {uuid.%player%} to player's uuid
+
+on command:
+	loop {blockedcommands::*}:
+		if command is loop-value:
+			cancel event
+			send "&4Command Blocked!"
+			stop loop
+every 1 second:
+	loop all players:
+		set loop-player's food level to 20
+		set 
+on place fire:
+	cancel event
+
+on place tnt:
+	cancel event
+
+On Pick Up:
+	cancel event
+
+on death of Witch:
+	clear drops
+
+on damage:
+	cancel event
+on chat:
+		replace all "IP:" in message with "!Blocked!"
+		replace all "Join Now!" in message with "!Blocked!"
+		replace all "Join Now" in message with "!Blocked!"
+		replace all "Everyone Leave!" in message with "!Blocked!"
+		replace all "Join that server" in message with "!Blocked!"
+		replace all "Play." in message with "!Blocked!"
+		replace all ".com" in message with "!Blocked!"
+		replace all ".net" in message with "!Blocked!"
+		replace all ".org" in message with "!Blocked!"
+		replace all ".tk" in message with "!Blocked!"
+		replace all "Mc." in message with "!Blocked!"
+		replace all "23." in message with "!Blocked!"
+		replace all "192." in message with "!Blocked!"
+		replace all ":25565" in message with "!Blocked!"
+		replace all "cosmic" in message with "!Blocked!"
+		replace all "Fuck" in message with "!Blocked!"
+		replace all "Shit" in message with "!Blocked!"
+		replace all "F U C K" in message with "!Blocked!"
+		replace all "Fuk" in message with "!Blocked!"
+		replace all "Fuc" in message with "!Blocked!"
+		replace all "Fukc" in message with "!Blocked!"
+		replace all "Fucker" in message with "!Blocked!"
+		replace all "Fuker" in message with "!Blocked!"
+		replace all "Fucer" in message with "!Blocked!"
+		replace all "Nigger" in message with "!Blocked!"
+		replace all "Nigga" in message with "!Blocked!"
+		replace all "Niggar" in message with "!Blocked!"
+		replace all "Niger" in message with "!Blocked!"
+		replace all "Negro " in message with "!Blocked!"
+		replace all "DOT " in message with "!Blocked!"
+		replace all "(Dot)" in message with "!Blocked!"
+		replace all "Snow" in message with "☃ Snow ☃"
+		replace all "Cunt" in message with "!Blocked!"
+		replace all "Ass" in message with "!Blocked!"
+		replace all "bitch" in message with "!Blocked!"
+		replace all "bish" in message with "!Blocked!"
+		replace all "hell" in message with "!Blocked!"
+		replace all "WTF" in message with "!Blocked!"
+		replace all "Bich" in message with "!Blocked!"
+		replace all "bitches" in message with "!Blocked!"
+		replace all "Jew" in message with "!Blocked!"
+		replace all "Dick" in message with "!Blocked!"
+		replace all "Pussy" in message with "!Blocked!"
+		replace all "D1k" in message with "!Blocked!"
+		replace all "Dik" in message with "!Blocked!"
+		replace all "Dic" in message with "!Blocked!"
+		replace all "Fulk" in message with "!Blocked!"
+		replace all "Whore" in message with "!Blocked!"
+		replace all "Suck it" in message with "!Blocked!"
+		replace all "Ddos" in message with "!Blocked!"
+		replace all "Dos" in message with "!Blocked!"
+		replace all "boot" in message with "!Blocked!"
+		replace all "I am going to hack you" in message with "!Blocked!"
+		replace all "porn" in message with "!Blocked!"
+		replace all "pornhub" in message with "!Blocked!"
+		replace all "redtube" in message with "!Blocked!"
+		replace all "xvideos" in message with "!Blocked!"
+		replace all "Kill your self" in message with "!Blocked!"
+		replace all "aids" in message with "!Blocked!"
+		replace all "herpes" in message with "!Blocked!"
+
+
+
+
+
+
+
+on chat:
+	if message contains "!Blocked!":
+		wait 1 second
+		make player execute command "/me I just tried to Advertise/Swear!"
+		message "&6&lI have been kicked for swearing/Advertising"
+		message "&3&lStaff have been Notified!"
+		make player execute command "/hakick"
