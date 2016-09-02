@@ -23,7 +23,7 @@
 # ✲ You aren't allowed to copy this license information-text
 
 
-options:
+             options:
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------PERMISSIONS-------------------------------------------------|#
@@ -34,12 +34,13 @@ options:
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------------------------------------------------------------------|#     
-    Prefix: &6HubAdvanced &c>> &f 
-    version: 1.8               
+    P: &6HubAdvanced &c>> &f                  
                        #Permissions: EDITABLE
-    VIP: hubadvanced.vip  # VIP PLAYERS!
-    PLAYERPer: hubadvanced.player #Permission for players
-    ADMINPer: hubadvanced.admin #Permission for admins
+	VIP: hubadvanced.vip  # VIP PLAYERS!
+	PLAYERPer: hubadvanced.player #Permission for players
+	ADMINPer: hubadvanced.admin #Permission for admins
+	                   # NO EDIT VERSION
+	version: 1.8
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------COMMANDS----------------------------------------------------|#
@@ -100,14 +101,6 @@ command /addpermission [<offline player>]:
 				send "&6HUB ADVANCED &7» &rNeed Join The Player First!"
 		else:
 			send "&6HUB ADVANCED &7» &r/addpermission <player>"
-command /updateha:
-	permission: hubadvanced.admin
-	trigger:
-		set {_version} to text from url "https://github.com/cuidabrutos/HubAdvanced/raw/master/version.txt"
-		download from "https://raw.githubusercontent.com/cuidabrutos/HubAdvanced/master/Hubadvanced.sk" to "plugins/Skript/scripts/HubAdvancedCODE.sk"
-		execute console command "sk reload HubAdvancedCODE"
-		wait 5 ticks
-		send "{@Prefix} Actualizaste Bien!" to console
 command /block <text>:
 	permission: hubadvanced.admin
 	permission message: Need Permission!
@@ -160,6 +153,32 @@ command /invseeoffline [<offlineplayer>]:
 		set {EditingInventory::%player%} to arg-1
 		open chest with 4 rows named "Inventory Of - %arg-1%" to player
 		set serialized contents of player's current inventory to {Inventory::%arg-1%}
+command /signs [<text>] [<text>]:
+	permission: hubadvanced.admin
+	trigger:
+		if arg 1 isn't set:
+			message ""
+			message " &6HUB ADVANCED &7» &bv.{@version}"
+			message " &a/signs setname1 <text> - &bSetname To Command Line 1"
+			message " &a/signs setcommand1 </command> &7» &bSet To Command"
+			message " &a/signs view1 &7» &bView Name and Command To Sign 1!"
+		else if arg 1 is "setname1":
+			if arg 2 is "%arg 2%":
+				set {SignName1} to arg 2
+				send " &6HUB ADVANCED &7» &aName Of Sign Set! To: %{SignName1}% "
+			else:
+			    send "{@P} Set Name!"
+		else if arg 1 is "setcommand1":
+			if arg 2 is "%arg 2%":
+				set {SignCommand1} to arg 2
+				send " &6HUB ADVANCED &7» &aCommand Of Sign Set To: &4&l%arg 2% "      
+            else:
+                send "{@P} Select Command First!"
+command /view1:
+   permission: hubadvanced.admin
+   trigger:
+       send "{@P} Name: {SignName1}"
+       send "{@P} Command: {SignCommand1}"
 command /hub:
 	permission: hubadvanced.player
 	trigger:
@@ -168,10 +187,30 @@ command /hub:
 command /hakick:
 	trigger:
 		execute console command "/kick %Player% &5&l⇒You have been Kicked for &6&lSwearing/Advertising⇐"
+command /autoupdater [<text>]:
+   permission: hubadvanced.admin
+   trigger:
+	   if arg 2 is "on":
+			broadcast " &6HUB ADVANCED &7» &aAuto Updater Set To True!. "
+			set {autoupdater} to true
+	   if arg 2 is "off":
+			broadcast " &6HUB ADVANCED &7» &cAuto Updater Set To False!. "
+			set {autoupdater} to false
+	   else:
+			message " &6HUB ADVANCED &7» &cYou dont have permission for this command!"
 command /hubadvanced [<text>] [<text>]:
 	aliases: /ha
 	permission: hubadvanced.admin
-	trigger:		
+	trigger:
+		if player has permission "{@ADMINper}":
+			if arg 1 is "update":
+				if {@updater} is true:	
+					wait 1 second
+					if text from "" is not "{@version}":
+						message "{@P} Nueva version disponible! &6Descarga de: &bhttps://www.spigotmc.org/resources/%E2%98%85-hub-advanced-professional-hub-%E2%98%85.28280/"
+					if text from "" is "{@version}":
+						message "{@P} No hay actualizacion disponible."
+						stop		
 		if arg 1 isn't set:
 			message ""
 			message " &6HUB ADVANCED &7» &bv.1.8"
@@ -242,7 +281,7 @@ on load:
 		wf "## Hub Advanced By Cuidabrutos ##" to "plugins/HubAdvanced/config.yml"
 		wf "## JOIN ON HUB ##" to "plugins/HubAdvanced/config.yml"
 		wf "teleport-to-lobby-on-join: true" to "plugins/HubAdvanced/config.yml"
-  wf "## WELCOME MESSAGE TRUE/FALSE ##" to "plugins/HubAdvanced/config.yml"
+        wf "## WELCOME MESSAGE TRUE/FALSE ##" to "plugins/HubAdvanced/config.yml"
 		wf "welcome-msg: true" to "plugins/HubAdvanced/config.yml"
 		wf "borderline1: '&7&l&m=============================='" to "plugins/HubAdvanced/config.yml"
 		wf "line1: '&f&lWelcome to server! HubAdvanced!'" to "plugins/HubAdvanced/config.yml"
@@ -253,7 +292,7 @@ on load:
 		wf "cancel-drop: true" to "plugins/HubAdvanced/config.yml"
 		wf "cancel-damage: true" to "plugins/HubAdvanced/config.yml"
 		wf "## Motd ##" to "plugins/HubAdvanced/config.yml"
-  wf "motdenable: true" to "plugins/HubAdvanced/config.yml"
+		wf "motdenable: true" to "plugins/HubAdvanced/config.yml"
 	set {HubAdvanced.config::bline1} to coloured value "borderline1" get of "plugins/HubAdvanced/config.yml"
 	set {HubAdvanced.config::bline2} to coloured value "borderline2" get of "plugins/HubAdvanced/config.yml"
 	set {HubAdvanced.config::tp-onjoin} to value "teleport-to-lobby-on-join" get of "plugins/HubAdvanced/config.yml"
@@ -413,9 +452,7 @@ on respawn:
 	make player execute command "/hub"
 on quit:
 	set {Inventory::%player%} to serialized contents of player's inventory
-on load:
-    if {_version} is not set:
-        set {_version} to text from url "https://github.com/cuidabrutos/HubAdvanced/raw/master/version.txt"
+
 on join:
 	set serialized contents of player's inventory to {Inventory::%player%}
 
@@ -499,84 +536,15 @@ on weather change to rain or thunder:
 	execute console command "/gamerule doDaylightCycle true"
 	execute console command "/gamerule commandBlockOutput false"
 on chat:
-	replace all "{<3}" in the message with "♥"
-	replace all "{music}" in the message with "♫"
-	replace all "{nuclear}" in the message with "☢"
-	replace all "{yinyan}" in the message with "☯"
-	replace all "{:D}" in the message with "ツ"
-	replace all "{x}" in the message with "✘"
-	replace all "cuidabrutos" in the message with "&l&4Cuidabrutos"
-	replace all "{tm}" in the message with "™"
-	replace all "{sol}" in the message with "☀"
-	replace all "{human}" in the message with "웃"
-	replace all "{nazi}" in the message with "卐"
-	replace all "{wtf}" in the message with "(っ&c◕&7‿&c◕&7)っ"
-	replace all "{cloud}" in the message with "☁"
-	replace all ":)" in message with "☺"
-	replace all ":(" in message with "☹"
-	replace all "(dia)" in message with "☼"
-	replace all "<3" in message with "❤"
-	replace all "(-_*)" in message with "ツ"
-	replace all "(nubes)" in message with "☁"
-	replace all "(diamante)" in message with "♢"
-	replace all "(telefono)" in message with "☎"
-	replace all "(avion)" in message with "✈"
-	replace all "(musica)" in message with "♪♫♫♪"
-	replace all "(ch)" in message with "emoti ch"
-	replace all "(paz)" in message with "☮"
-	replace all "(nieve)" in message with "☃"
-	replace all "(paraguas)" in message with "☂"
-	replace all "(paraguas2)" in message with "☔"
-	replace all "(ok)" in message with "✔"
-	replace all "(no)" in message with "✖"
-	replace all "(aviso)" in message with "⚠"
-	replace all "(pene)" in message with "8==>"
-	replace all "(1)" in message with "➊"
-	replace all "(2)" in message with "➋"
-	replace all "(3)" in message with "➌"
-	replace all "(4)" in message with "➍"
-	replace all "(5)" in message with "➎"
-	replace all "(6)" in message with "➏"
-	replace all "(7)" in message with "➐"
-	replace all "(8)" in message with "➑"
-	replace all "(9)" in message with "➒"
-	replace all "(10)" in message with "➓"
-	replace all "(q)" in message with "ⓠ"
-	replace all "(w)" in message with "ⓦ"
-	replace all "(e)" in message with "ⓔ"
-	replace all "(dos)" in message with "✌"
-	replace all "(estrella)" in message with "★"
-	replace all "(peon)" in message with "♙"
-	replace all "(reina)" in message with "♕"
-	replace all "(rey)" in message with "♔"
-	replace all "(torre)" in message with "♖"
-	replace all "(flor)" in message with "✿"
-	replace all "(pila)" in message with "∞"
-	replace all "(trueno)" in message with "ϟ"
-	replace all "(copo)" in message with "❅"
-	replace all "(flecha)" in message with "➳"
-	replace all "(chico)" in message with "♂"
-	replace all "(chica)" in message with "♀"
-	replace all "(muerte)" in message with "☠"
-	replace all "(hora)" in message with "⌚"
-	replace all "(tijera)" in message with "✄"
-	replace all "(nazi)" in message with "卍"
-	replace all "(sobre)" in message with "✉"
-	replace all "(paz)" in message with "☮"
-	replace all "(lapiz)" in message with "✎"
-	replace all "(tiempo)" in message with "⌛"
-	replace all "(toxico)" in message with "☢"
-	replace all "(humano)" in message with "웃"
-	replace all "(cruz)" in message with "✞"
-	replace all "(corazon)" in message with "ღ"
-	replace all "(0_0)" in message with "◉◡◉"
-	replace all "(:>)" in message with "ಠ⌣ಠ"
-	replace all "(-_-)" in message with "(¬_¬)"
-	replace all ":,(" in message with "ಥ_ಥ"
-	replace all "(YinYang)" in message with "♋"
-	replace all "(c)" in message with "©"
-	replace all "(r)" in message with "®"
-	replace all "(tm)" in message with "™"
+	replace all "<3" in the message with "&c&l❤&f"
+	replace all "{music}" in the message with "&a&l♫&f"
+	replace all "{nuclear}" in the message with "&6☢&f"
+	replace all ":D" in the message with "&aツ&f"
+	replace all "{x}" in the message with "&r✘&f"
+	replace all "{tm}" in the message with "&f™&f"
+	replace all "{sol}" in the message with "&e☀&f"
+	replace all "{human}" in the message with "&r웃&f"
+	replace all "{nazi}" in the message with "&c&l卐&f"
 
 
 
@@ -596,14 +564,7 @@ every 1 second:
 		set 
 on place fire:
 	cancel event
-every 5 seconds:
-	if {update} is true:
-        set {update} to false
-	    send "&6HUB ADVANCED &c>> &a&l AutoUPDATING Wait.." to console
-		download from "https://raw.githubusercontent.com/cuidabrutos/HubAdvanced/master/Hubadvanced.sk" to "plugins/Skript/scripts/HubAdvancedCODE.sk"
-		wait 5 ticks
-		execute console command "/skript reload HubAdvancedCODE"
-		send "&6HUB ADVANCED &c>> &a&l FINISH CHECK TO NEW IN THE PAGE SPIGOT!" to console
+
 on place tnt:
 	cancel event
 
