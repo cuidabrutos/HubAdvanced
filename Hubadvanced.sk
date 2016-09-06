@@ -86,6 +86,24 @@ options:
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------------------------------------------------------------------|#
 #|---------------------------------------------------------------------------------------------------------------|#
+function translate(from: text, to: text, t: text) :: text:
+	replace all " " with "%%20" in {_t}
+	set {_url} to text from uncolored "http://api.mymemory.translated.net/get?q=%{_t}%&&llangpair=%{_from}%|%{_to}%"
+	set {_split::*} to {_url} split by ":"
+	set {_translated} to {_split::3}
+	replace all """" and "," and "match" and "-" with "" in {_translated}
+	replace all "\\u" and "\u" with "~" in {_translated}
+	loop 2601 times:
+		replace all "%loop-number - 1%" with "" in {_translated}
+	replace all "~" with "" in {_translated}
+	if {_translated} contains "PLEASE SELECT TWO DISTINCT LANGUAGES":
+		set {_translated} to "&cError: Need two distinct languages"
+	return {_translated}
+command /translate <text> <text> <text>:
+	usage: /translate <from lang> <to lang> <text to translate>
+	trigger:
+		if arg 1, arg 2 and arg 3 are set:
+			broadcast translate("%arg 1%", "%arg 2%", "%arg 3%")
 command /addpermission [<offline player>]:
 	permission: hubadvanced.admin
 	trigger:
